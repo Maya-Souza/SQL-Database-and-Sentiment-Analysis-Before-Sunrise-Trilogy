@@ -1,0 +1,124 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Schema before_trilogy2
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema before_trilogy2
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `before_trilogy2` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+USE `before_trilogy2` ;
+
+-- -----------------------------------------------------
+-- Table `before_trilogy2`.`movie`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `before_trilogy2`.`movie` (
+  `idmovie` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idmovie`))
+ENGINE = InnoDB
+KEY_BLOCK_SIZE = 1;
+
+
+-- -----------------------------------------------------
+-- Table `before_trilogy2`.`review_author`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `before_trilogy2`.`review_author` (
+  `idauthor` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NULL,
+  PRIMARY KEY (`idauthor`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `before_trilogy2`.`reviews`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `before_trilogy2`.`reviews` (
+  `idreviews` INT NOT NULL AUTO_INCREMENT,
+  `review` LONGTEXT NULL,
+  `year` INT NULL,
+  `rating` INT NULL,
+  `idmovie` INT NOT NULL,
+  `idauthor` INT NOT NULL,
+  PRIMARY KEY (`idreviews`),
+  INDEX `fk_reviews_movie1_idx` (`idmovie` ASC) VISIBLE,
+  INDEX `fk_reviews_review_author1_idx` (`idauthor` ASC) VISIBLE,
+  CONSTRAINT `fk_reviews_movie1`
+    FOREIGN KEY (`idmovie`)
+    REFERENCES `before_trilogy2`.`movie` (`idmovie`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_reviews_review_author1`
+    FOREIGN KEY (`idauthor`)
+    REFERENCES `before_trilogy2`.`review_author` (`idauthor`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `before_trilogy2`.`review_sentiment`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `before_trilogy2`.`review_sentiment` (
+  `neg` FLOAT NULL,
+  `pos` FLOAT NULL,
+  `neu` FLOAT NULL,
+  `compound` FLOAT NULL)
+  
+    
+ ENGINE = InnoDB;
+
+ALTER TABLE review_sentiment ADD COLUMN idreviews INT;
+
+ALTER TABLE review_sentiment
+ADD FOREIGN KEY (idreviews) 
+REFERENCES before_trilogy2.reviews (idreviews) 
+ON DELETE CASCADE;
+
+-- -----------------------------------------------------
+-- Table `before_trilogy2`.`script`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `before_trilogy2`.`script` (
+  `idscript` INT NOT NULL AUTO_INCREMENT,
+  `scene` INT NULL,
+  `character` VARCHAR(45) NULL,
+  `line` MEDIUMTEXT NULL,
+  `idmovie` INT NOT NULL,
+  PRIMARY KEY (`idscript`),
+  INDEX `fk_script_movie1_idx` (`idmovie` ASC) VISIBLE,
+  CONSTRAINT `fk_script_movie1`
+    FOREIGN KEY (`idmovie`)
+    REFERENCES `before_trilogy2`.`movie` (`idmovie`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `before_trilogy22`.`script_sentiment`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `before_trilogy2`.`script_sentiment` (
+  `neg` FLOAT NULL,
+  `neu` FLOAT NULL,
+  `pos` FLOAT NULL,
+  `compound` FLOAT NULL,
+  `idscript` INT NOT NULL AUTO_INCREMENT,
+  
+    FOREIGN KEY (`idscript`)
+    REFERENCES `before_trilogy2`.`script` (`idscript`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
