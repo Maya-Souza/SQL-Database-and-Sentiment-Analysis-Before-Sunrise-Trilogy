@@ -4,7 +4,7 @@ import config.sql_connection as connect
 import sqlalchemy as alch
 import pandas as pd
 
-engine = connect()
+engine = connect.connecting()
 
 
 def check (table, string):
@@ -75,7 +75,7 @@ def insert_movie(name_movie):
 
 ################################################
 
-def insertauthor (col_authors):
+def insert_author_from_df (col_authors):
 
     '''
     Function that inserts a author into the "review_author" table.
@@ -87,10 +87,22 @@ def insertauthor (col_authors):
     for row in col_authors:
 
         if check("review_author", row):
+            print('Author already exists in database.')
             pass
 
         else:
             engine.execute(f"INSERT INTO review_author (name) VALUES ('{row}');")
+
+################################################
+
+def insert_author_from_api (author_name):
+    
+    if check("review_author", author_name):
+        print('Author already exists in database.')
+        pass
+    
+    else:
+        engine.execute(f"INSERT INTO review_author (name) VALUES ('{author_name}');")
 
 ################################################
 
@@ -202,7 +214,7 @@ def see_specific_review(movie_name, idreview):
     qry = f"""
     SELECT r.idreviews, r.review, r.year, m.name movie_name, r.idauthor FROM reviews r
     JOIN movie m ON r.idmovie = m.idmovie
-    WHERE m.name = '{movie_name}' AND r.idreviews = '{idreview}
+    WHERE m.name = '{movie_name}' AND r.idreviews = {idreview}
     """
     if check('movie', movie_name):
         
@@ -216,3 +228,97 @@ def see_specific_review(movie_name, idreview):
 
     else:
         return 'Movie is not in database'
+
+################################################
+
+def see_specific_author(name_author):
+    
+    qry = f"""
+    SELECT r.idreviews, r.review, r.year, m.name movie_name, r.idauthor, ra.name FROM reviews r
+    JOIN movie m ON r.idmovie = m.idmovie
+    JOIN review_author ra ON r.idauthor = ra.idauthor
+    WHERE ra.name = '{name_author}'
+    """
+    if check('review_author', name_author):
+
+        #query1 = list(engine.execute(f"SELECT ra.idauthor FROM ra WHERE ra.name = '{name_author}';"))[0]
+        #query = list(engine.execute(f"SELECT review FROM reviews WHERE ra.idauthor = {query1};"))
+   
+        return pd.DataFrame(engine.execute(qry))
+
+    else:
+        return 'No review from this author.'
+
+################################################
+
+def new_review_or_movie(author_name, movie_name, new_review, new_rating, year):
+    
+    insert_movie(movie_name)
+    insert_author_from_api(author_name)
+    
+    if (check('movie', movie_name) & check('review_author', author_name)):
+        return 'A review for this movie has been posted by this user already'
+    
+    else:
+
+        qry = f"""
+        INSERT INTO reviews (idmovie, idauthor, review, rating, year) 
+        VALUES (
+            (SELECT idmovie FROM movie WHERE name = '{movie_name}'),
+            (SELECT idauthor FROM review_author WHERE name = '{author_name}'),
+            '{new_review}',
+            {new_rating},
+            {year}    
+        ); 
+        """
+
+        engine.execute(qry)
+
+        return 'Review inserted!'
+
+################################################
+
+
+def get_all_movies():
+
+    a = pd.DataFrame(engine.execute("SELECT * FROM movie;"))
+
+    return a 
+
+################################################
+
+def get_all_authors():
+
+    a = pd.DataFrame(engine.execute("SELECT * FROM review_author;"))
+
+    return a 
+################################################
+
+def get_averages(movie_name):
+
+    if movie_name == 'all':
+        qry = """
+        SELECT AVG(r.rating) avg_all_ratings, AVG(rs.compound) avg_compound_sentiment, m.name
+        FROM reviews r
+        JOIN review_sentiment rs ON r.idreviews = rs.idreviews
+        JOIN movie m ON r.idmovie = m.idmovie
+        GROUP BY m.name
+        """
+
+        return pd.DataFrame(engine.execute(qry))
+    
+    elif check('movie', movie_name):
+        
+        qry = f"""
+        SELECT AVG(r.rating) avg_all_ratings, AVG(rs.compound) avg_compound_sentiment, m.name
+        FROM reviews r
+        JOIN review_sentiment rs ON r.idreviews = rs.idreviews
+        JOIN movie m ON r.idmovie = m.idmovie
+        WHERE m.name = '{movie_name}'
+        """
+        return pd.DataFrame(engine.execute(qry)).to_json()
+    
+    elif check('movie', movie_name) == False:
+        return "Movie not found."
+
+################################################
