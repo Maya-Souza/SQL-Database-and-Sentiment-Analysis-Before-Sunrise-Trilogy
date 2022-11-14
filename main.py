@@ -1,17 +1,23 @@
 import config.sql_connection as sql
 import tools.sql_queries as queries
+import calling_functions 
 
 import sqlalchemy as alch
 
 import pandas as pd
 import numpy as np
 
-from flask import Flask, request, jsonify
+from flask import Flask, request
 import markdown.extensions.fenced_code
 
+#################################################
 
-sql.connecting()
 
+# sql.connecting()
+# calling_functions()
+
+
+#################################################
 
 app = Flask(__name__)
 
