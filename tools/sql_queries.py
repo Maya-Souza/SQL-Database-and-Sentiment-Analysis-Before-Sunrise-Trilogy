@@ -256,25 +256,25 @@ def new_review_or_movie(author_name, movie_name, new_review, new_rating, year):
     insert_movie(movie_name)
     insert_author_from_api(author_name)
     
-    if (check('movie', movie_name) & check('review_author', author_name)):
-        return 'A review for this movie has been posted by this user already'
+    # if ((check('movie', movie_name)) and (check('review_author', author_name))):
+    #     return 'A review for this movie has been posted by this user already'
     
-    else:
+    # else:
 
-        qry = f"""
-        INSERT INTO reviews (idmovie, idauthor, review, rating, year) 
-        VALUES (
-            (SELECT idmovie FROM movie WHERE name = '{movie_name}'),
-            (SELECT idauthor FROM review_author WHERE name = '{author_name}'),
-            '{new_review}',
-            {new_rating},
-            {year}    
-        ); 
-        """
+    qry = f"""
+    INSERT INTO reviews (idmovie, idauthor, review, rating, year) 
+    VALUES (
+        (SELECT idmovie FROM movie WHERE name = '{movie_name}'),
+        (SELECT idauthor FROM review_author WHERE name = '{author_name}'),
+        '{new_review}',
+        {new_rating},
+        {year}    
+    ); 
+    """
 
-        engine.execute(qry)
+    engine.execute(qry)
 
-        return 'Review inserted!'
+    return 'Review inserted!'
 
 ################################################
 
