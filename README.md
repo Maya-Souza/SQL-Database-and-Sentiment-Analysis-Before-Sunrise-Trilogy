@@ -33,19 +33,32 @@ The step-by-step for this project was as it follows:
 
 
 
-4. ``Building an API to query the data``. Now that I had all the reviews scraped and loaded into my database, the next part was creating an API in order to make this data available through API requests. For the purposes of this project, I developed the minimal Flask app but did not deploy it, although this is something I want to do to complement this analysis in the future. I created 11 GET endpoints and 1 POST endpoint. These are:  
+4. ``Building an API to query the data``. Now that I had all the reviews scraped and loaded into my database, the next part was creating an API in order to make this data available through API requests. All the requests were queried through MySQL (the queries are available in the 'tools' folder) in order to give a response. For the purposes of this project, I developed the basic Flask app but did not deploy it, although this is something I want to do to complement it in the future. I've created 10 GET endpoints and 1 POST endpoint. These are:  
+
+**GET REQUESTS**  
 
 - @app.route("/") = access the README
-- @app.route("/moviesinfo/") = 
-- @app.route("/moviesinfo/<movie_name>/") = 
-- @app.route("/whatmovies/") =
-- @app.route("/reviews/<movie_name>") = 
-- @app.route("/reviews/<movie_name>/<idreview>") =
-- @app.route("/authors/<author_name>") =
-- @app.route("/movies") =
-- @app.route("/authors") =
-- @app.route("/averages") =
-- @app.route("/averages/<movie_name>") =
+- @app.route("/movies/") = lists all the movies in the database
+- @app.route("/averages") = returns the average of ratings and coumpound sentiment for every movie
+- @app.route("/averages/<movie_name>") = the averages for a specific movie
+- @app.route("/moviesinfo/") = returns a dataframe with all the movies in the database and the average for sentiment analysis, number of reviews and ratings per year per movie
+- @app.route("/moviesinfo/<movie_name>/") = the same as the previous one but for a specific movie
+- @app.route("/reviews/<movie_name>") = returns all the reviews for a specific movie
+- @app.route("/reviews/<movie_name>/<idreview>") = using the previous endpoint the user can choose an id and receive this specific review
+- @app.route("/authors") = returns all the IMDB users that have left a review for any of the movies in the database (as of 2022)
+- @app.route("/authors/<author_name>") = returns all the reviews made by a specific user  
+  
+  Below, an example of a get request:  
+  <img src= "https://user-images.githubusercontent.com/109185207/221385920-3e0ab003-0b9b-4339-bdc8-9f840645c90f.jpg" width="600" height="470">
+
+**POST REQUEST**
+- @app.route("/newreview/", methods=["POST"]) = you can add your own review for a movie in the database (this review is not posted on IMDB) but it doesn't allow the same user to leave more than one review for the same movie.
+  params = {'author_name': '', 'movie_name': '', 'new_review': '', 'new_rating': , 'year': }
+ Below, an example of a post request:  
+ <img src= "https://user-images.githubusercontent.com/109185207/221385906-54d9c77e-cd09-4e9f-be7f-0e5f020e4114.jpg" width="400" height="270">
+ 
+  
+
 
 5. ``Making requests to the API and visualizing the data``.
 
