@@ -52,7 +52,7 @@ The step-by-step for this project was as it follows:
   <img src= "https://user-images.githubusercontent.com/109185207/221385920-3e0ab003-0b9b-4339-bdc8-9f840645c90f.jpg" width="600" height="470">
 
 **POST REQUEST**
-- @app.route("/newreview/", methods=["POST"]) = you can add your own review for a movie in the database (this review is not posted on IMDB) but it doesn't allow the same user to leave more than one review for the same movie.
+- @app.route("/newreview/", methods=["POST"]) = you can add your own review for a movie in the database (this review is not posted on IMDB) but it doesn't allow the same user to leave more than one review for the same movie. If the movie doesn't exist in the database, it is automatically added.
   params = {'author_name': '', 'movie_name': '', 'new_review': '', 'new_rating': , 'year': }
  Below, an example of a post request:  
  <img src= "https://user-images.githubusercontent.com/109185207/221385906-54d9c77e-cd09-4e9f-be7f-0e5f020e4114.jpg" width="400" height="270">
