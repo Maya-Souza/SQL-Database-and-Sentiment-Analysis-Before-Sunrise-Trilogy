@@ -2,6 +2,7 @@
 
 import config.sql_connection as connect
 import sqlalchemy as alch
+import data_manipulation.sentiment_analysis as sent
 import pandas as pd
 
 engine = connect.connecting()
@@ -197,15 +198,30 @@ def sentiment_per_year(movie_name):
 def see_reviews(movie_name):
     
     qry = f"""
-    SELECT r.idreviews, r.review, r.year, m.name movie_name, r.idauthor FROM reviews r
-    JOIN movie m ON r.idmovie = m.idmovie
-    WHERE m.name = '{movie_name}'
+        SELECT 
+            r.idreviews, 
+            ra.name AS 'author_name', 
+            r.review, 
+            r.year AS 'year_review', 
+            r.rating,
+            m.idmovie, 
+            m.name AS 'movie_name',  
+            r.idauthor, 
+            rs.neg AS 'neg_score', 
+            rs.pos AS 'pos_score', 
+            rs.compound AS 'compound_score'
+        FROM reviews r
+            JOIN review_sentiment rs ON r.idreviews = rs.idreviews
+            JOIN movie m ON r.idmovie = m.idmovie
+            JOIN review_author ra ON r.idauthor = ra.idauthor
+        WHERE m.name = '{movie_name}'
     """
     if check('movie', movie_name):
         return pd.DataFrame(engine.execute(qry))
 
     else:
         return 'Movie is not in database'
+
 
 ################################################
 
@@ -253,28 +269,58 @@ def see_specific_author(name_author):
 
 def new_review_or_movie(author_name, movie_name, new_review, new_rating, year):
     
-    insert_movie(movie_name)
-    insert_author_from_api(author_name)
-    
-    # if ((check('movie', movie_name)) and (check('review_author', author_name))):
-    #     return 'A review for this movie has been posted by this user already'
-    
-    # else:
-
     qry = f"""
-    INSERT INTO reviews (idmovie, idauthor, review, rating, year) 
-    VALUES (
-        (SELECT idmovie FROM movie WHERE name = '{movie_name}'),
-        (SELECT idauthor FROM review_author WHERE name = '{author_name}'),
-        '{new_review}',
-        {new_rating},
-        {year}    
-    ); 
+    SELECT EXISTS(SELECT r.idmovie, r.idauthor FROM reviews r
+    JOIN movie m ON r.idmovie = m.idmovie
+    JOIN review_author ra ON r.idauthor = ra.idauthor
+    WHERE m.name = '{movie_name}' 
+    AND ra.name = '{author_name}');
     """
+   
+    eng = engine.execute(qry).fetchall()
+    # print(eng)
+    
+    if eng[0][0] == 1:
+        return 'A review for this movie has been posted by this user already'
+    
+    else:
+        insert_movie(movie_name)
+        insert_author_from_api(author_name)
+        
+        # Running the sentiment analysis on the new review
+        df = {'author_name': author_name, 
+            'movie_name': movie_name, 
+            'Review': new_review, 
+            'new_rating': new_rating, 
+            'year': year}
+        
+        df = pd.DataFrame(df, index=[0])
+        
+        df1 = sent.sentiment_analysis_reviews(df)
+                
+        # Inserting the new review along with the sentiment analysis results
+        qry2 = f"""
+        INSERT INTO reviews (idmovie, idauthor, review, rating, year) 
+        VALUES (
+            (SELECT idmovie FROM movie WHERE name = '{movie_name}'),
+            (SELECT idauthor FROM review_author WHERE name = '{author_name}'),
+            '{new_review}',
+            {new_rating},
+            {year}    
+        );
+        """
+        engine.execute(qry2)
+        
+        qry3 = f"""
+        INSERT INTO review_sentiment (pos, neg, neu, compound) 
+        VALUES ({df1['positive sentiment'][0]}, {df1['negative sentiment'][0]}, 
+                {df1['neutral sentiment'][0]}, {df1['compound sentiment'][0]}     
+        ); 
+        """
 
-    engine.execute(qry)
+        engine.execute(qry3)
 
-    return 'Review inserted!'
+        return 'Review inserted!'
 
 ################################################
 
