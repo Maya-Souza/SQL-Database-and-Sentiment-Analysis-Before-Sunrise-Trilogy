@@ -1,6 +1,6 @@
 import config.sql_connection as sql
 import tools.sql_queries as queries
-import calling_functions 
+#import calling_functions 
 
 import sqlalchemy as alch
 
@@ -13,8 +13,8 @@ import markdown.extensions.fenced_code
 #################################################
 
 
-# sql.connecting()
-# calling_functions()
+#sql.connecting()
+#calling_functions()
 
 
 #################################################
@@ -39,7 +39,7 @@ def infospecificmovie (movie_name):
     return (queries.sentiment_per_year(movie_name)).to_json()
 #################################################
 
-@app.route("/whatmovies/")
+@app.route("/movies/")
 def get_movie ():
     return (queries.get_all_movies()).to_json()
 #################################################
@@ -72,11 +72,6 @@ def get_author (author_name):
     return (queries.see_specific_author(author_name)).to_json()
 #################################################
 
-@app.route("/movies")
-def get_movies ():
-    return (queries.get_all_movies()).to_json()
-
-#################################################
 @app.route("/authors")
 def get_authors ():
     return (queries.get_all_authors()).to_json()
