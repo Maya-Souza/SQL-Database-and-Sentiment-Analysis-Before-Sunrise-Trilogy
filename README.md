@@ -33,7 +33,11 @@ The step-by-step for this project was as it follows:
 
 
 
-4. ``Building an API to query the data``. Now that I had all the reviews scraped and loaded into my database, the next part was creating an API in order to make this data available through API requests. All the requests were queried through MySQL (the queries are available in the 'tools' folder) in order to give a response. For the purposes of this project, I developed the basic Flask app but did not deploy it, although this is something I want to do to complement it in the future. I've created 10 GET endpoints and 1 POST endpoint. These are:  
+4. ``Building an API to query the data``. Now that I had all the reviews scraped and loaded into my database, the next part was creating an API in order to make this data available through API requests. All the requests were queried through SQLAlchemy (the queries are available in the 'tools' folder) so I could build them through Python while connected to the MySQL database. For the purposes of this project, I developed the basic Flask app but did not deploy it, although this is something I want to do to complement it in the future.  
+  
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *Tools*: Flask, SQLAlchemy.
+
+I've created 10 GET endpoints and 1 POST endpoint. These are:  
 
 **GET REQUESTS**  
 
@@ -58,10 +62,22 @@ params = {'author_name': '', 'movie_name': '', 'new_review': '', 'new_rating': ,
   
   Below, an example of a post request:  
   <img src= "https://user-images.githubusercontent.com/109185207/221385906-54d9c77e-cd09-4e9f-be7f-0e5f020e4114.jpg" width="400" height="270">
- 
+   
+
+## API calls, visualizing the data and conclusions  
   
+The goal of this analysis was to check if there's a clear difference between the ratings and sentiment from when each movie was released and now. With all the pieces done, I could call my own API so it would automatically query my data through MySQL and use the results to visualize it.  
+  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *Tools*: My own API and Plotly for the visualizations.  
+    
+1. The first thing I decided to check was which of the movies had better ratings and if the sentiment analysis run on the reviews was indeed compatible with the average of ratings left by the users.   
+  
+  ![avg_all_ratings](https://user-images.githubusercontent.com/109185207/221647271-b43ee51c-ef66-4b50-8d75-7e2cca4e3094.jpeg)
 
+- We can see that the first movie of the trilogy performed better than the other two and that the sentiment analysis seems to be consistent with the ratings results. It's worth mentioning that in order to leave a review, the user doesn't necessarily have to leave a rating. So, for some years, there are more reviews than ratings.  
+  
+  
+2. 
 
-5. ``Making requests to the API and visualizing the data``.
-
-## Conclusions
+  
+  
