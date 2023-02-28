@@ -1,5 +1,6 @@
 # 🎥 'Before Sunrise' trilogy IMDB audience reviews: did people's opinions of the 3 movies varied throughout the years? 🎥
 
+
 The goal of this project was to run a sentiment analysis on IMDB audience reviews to get insights of people's perceptions of the three movies. The reviews were scraped, loaded into a SQL database and then made available through an API built using Flask for this project. Then the data was visualized by making API requests to my own database in order to see possible patterns in the audience's opinions.
 Below, some contextualization, the step-by-step process, visualizations and conclusions.
 
@@ -12,7 +13,9 @@ It's fairly common to see a sharp difference in what the public thinks about a p
 
 A quick google search shows that even though Before Sunrise, the first movie of the trilogy, was a hit when it first came out in 1995, now it's seen as pretentious by many. Conversely, Before Midnight, the last one, was received as "overly 'woke'" by part of the audience when it came out in 2013.
 
-With the analysis here presented I intend to check these differences throughout the years and see how people's opinions have changed since the movies' release dates in comparison to today by conducting a ``sentiment analysis`` on the audience reviews left on IMDB.
+With the analysis here presented I intend to check these differences throughout the years and see how people's opinions have changed since the movies' release dates in comparison to today by conducting a ``sentiment analysis`` on the audience reviews left on IMDB.  
+
+![imagen](https://user-images.githubusercontent.com/109185207/221919338-c47f289b-ced8-4f14-83e7-4d19bff0a6e0.png)
 
 ## Methodology and tools used
 
@@ -70,14 +73,39 @@ The goal of this analysis was to check if there's a clear difference between the
   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *Tools*: My own API and Plotly for the visualizations.  
     
-1. The first thing I decided to check was which of the movies had better ratings and if the sentiment analysis run on the reviews was indeed compatible with the average of ratings left by the users.   
+1. I decided to check which of the movies had better ratings and if the sentiment analysis run on the reviews was indeed compatible with the average of ratings left by the users.   
   
-  ![avg_all_ratings](https://user-images.githubusercontent.com/109185207/221647271-b43ee51c-ef66-4b50-8d75-7e2cca4e3094.jpeg)
+  ![avg_all_ratings](https://user-images.githubusercontent.com/109185207/221914563-6dde725e-319b-41a2-9ef5-be6ef21e477c.jpeg)
 
-- We can see that the first movie of the trilogy performed better than the other two and that the sentiment analysis seems to be consistent with the ratings results. It's worth mentioning that in order to leave a review, the user doesn't necessarily have to leave a rating. So, for some years, there are more reviews than ratings.  
-  
-  
-2. 
 
+- We can see that the first movie of the trilogy performed better than the other two and that the sentiment analysis seems to be consistent with the ratings results. It's worth mentioning that in order to leave a review, the user doesn't necessarily have to leave a rating. So, for some years, there are more reviews than ratings. With this piece of information only, it's not possible to verify how the audience's sentiment varied throughout the years, which brings us to the second visualization. 
   
+  
+2. The graphs below help us to find any possible differences in how the audiences perceived the movies depending on the year they watched them.  
+    
+  
+  ![avg_sentiment_per_year_sunrise](https://user-images.githubusercontent.com/109185207/221914622-6aa42112-910c-4af6-b655-1fae9cb5285a.jpeg)
+
+    
+  
+  ![avg_sentiment_per_year_sunset](https://user-images.githubusercontent.com/109185207/221914647-dec99cca-b9a8-4400-b82c-e30b7747221c.jpeg)
+
+    
+  
+ 
+![avg_sentiment_per_year_midnight](https://user-images.githubusercontent.com/109185207/221914669-5c4f3b35-a580-41b9-8ce3-1d90e054f1d6.png)  
+    
+    
+- There doesn't seem to be any visible trend in relation to people's opinions over the years. The fact the number of reviews can vary so drastically from one year to another also make it difficult to arrive at any conclusions. At first glance, it might look like people's sentiment changed a lot from one period to the next, but this happens only when the number of reviews is low, otherwise, the variation isn't that great.  
+  
+- An interesting thing is that all the movies experience a peak in reviews during 2020, most likely due to COVID, but even though the first movie reached 83 reviews, the second and the third ones reached around 40 each. This might be because people forgot or didn't want to leave reviews after the first one, or because they simply didn't like it and gave up on watching the whole trilogy.  
+  
+- Besides the pandemic years, there's also an increase of reviews in 2004/2005 and 2013/2014 for the first movie, and in 2013/2014 for the second one, probably because those are the years in which the second and the third movies, respectively, were released. It seems like people were watching the older movies before watching the most recent one. Similarly, the highest volume of reviews happens within the first 2 years of release date, except for Before Sunrise because it was released when the internet wasn't widespread.  
+  
+- Judging solely by the data shown in this analysis, a trend didn't become apparent. So, it's impossible to affirm that the public changed the way it looks at these movies depending on the year they watched them, specially because IMDb is not representative of every type of person that watched these trilogy. It could be interesting to replicate this analysis with movies that are more "controversial" or "problematic", such as comedies like "American pie". Or maybe complement these results with Tweets or Google Trends, for example, to see what people were and are saying about these movies online, outside of the "beaurocracy" of IMDb (having to create an account, leave a rating and write a review without any engagement from others with it).  
+    
+    
+ **Thank you so much for reading, and if you have any comments or questions feel free to connect with me via [LinkedIn!](https://www.linkedin.com/in/mayara-almeida-souza/)**
+
+
   
