@@ -73,6 +73,14 @@ The goal of this analysis was to check if there's a clear difference between the
   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *Tools*: My own API and Plotly for the visualizations.  
     
+  <img src= "https://user-images.githubusercontent.com/109185207/221930192-880a930f-8f49-4695-8fe1-376c8124c0cb.jpg" width="700" height="270">  
+  
+  *The info needed for the visualizations being requested through the API*      
+ 
+  --------   
+    
+  
+    
 1. I decided to check which of the movies had better ratings and if the sentiment analysis run on the reviews was indeed compatible with the average of ratings left by the users.   
   
   ![avg_all_ratings](https://user-images.githubusercontent.com/109185207/221914563-6dde725e-319b-41a2-9ef5-be6ef21e477c.jpeg)
