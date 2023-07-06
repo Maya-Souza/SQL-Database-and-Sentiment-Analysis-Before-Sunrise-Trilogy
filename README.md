@@ -32,7 +32,7 @@ The step-by-step for this project was as it follows:
 
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *Tools*: MySQL Workbench.  
       
-   <img src= "https://user-images.githubusercontent.com/109185207/221370658-d657f078-53ff-44e0-a964-d95ca55b8c02.jpg" width="600" height="470">
+<img src= "https://github.com/Maya-Souza/SQL-Database-and-Sentiment-Analysis-Before-Sunrise-Trilogy/assets/109185207/9a9924cf-dffb-4ccc-b36f-67c74abf5513" width="600" height="470">
 
 
 
